@@ -1,0 +1,258 @@
+1* Write an SQL query to fetch “First_Name” from Sellers  table using the alias name as <First_Name>
+
+Select First_Name AS SellerName from Sellers;
+
+2* Write an SQL query to fetch “FIRST_NAME” from Worker table in upper case.
+
+Select upper(First_Name) from Sellers;
+
+3* Write an SQL query to fetch unique values of Salary from Sellers table.
+
+Select distinct Salary from Sellers;
+
+5* Write an SQL query to find the position of the alphabet (‘a’) in the First_Name column ‘Amitabh’ from Sellers table.
+
+Select INSTR(FIRST_NAME, BINARY'a') from Sellers where First_Name = 'Amitabh';
+
+6* Write an SQL query to print the First_Name from Sellers table after removing white spaces from the right side.
+
+Select RTRIM(First_Name) from Sellers;
+
+7* Write an SQL query to print the Title from Books table after removing white spaces from the left side.
+
+Select LTRIM(Title) from Books;
+
+8* Write an SQL query that fetches the unique values of Title from Books table and prints its length.
+
+Select distinct length(Title) from Books;
+
+9* Write an SQL query to print the Title from Books table after replacing ‘a’ with ‘A’.
+
+Select REPLACE(Title,'a','A') from Books;
+
+10* Write an SQL query to Readers details for Customer with the First_Name as “Vipul” and “Satish” from Readers table.?
+
+Select * from Customer where First_Name in ('Vipul','Satish');
+ 
+11*  Write an SQL query to print details of Managers excluding Last_Names, “Vipul” and “Satish” from Readers table.?
+
+Select * from Readers where Last_Name not in ('Vipul','Satish');
+
+12* Write an SQL query to show only odd rows from a table.??
+
+SELECT * FROM Books WHERE MOD (Book_ID, 2) <> 0;
+
+13* Write an SQL query to show only even rows from a table.??
+
+SELECT * FROM Books WHERE MOD (Book_ID, 2) = 0;
+ 
+14* Write an SQL query to clone a new table from another table.?
+
+SELECT * INTO BookClone FROM Books;
+SELECT * INTO BookClone FROM Books WHERE 1 = 0;
+CREATE TABLE BookClone LIKE Books;
+
+15* Write an SQL query to fetch intersecting records of two tables?
+
+(SELECT * FROM Book)
+INTERSECT
+(SELECT * FROM BookClone);
+ 
+16*  Write an SQL query to show the second highest Price from a table.?
+
+Select max(Price) from Books 
+where Price not in (Select max(Price) from Book);
+ 
+17* Write an SQL query to show only odd rows from a table.??
+
+SELECT * FROM Books WHERE MOD (Book_ID, 2) <> 0;
+
+18* Write an SQL query to show only even rows from a table.??
+
+SELECT * FROM Books WHERE MOD (Book_ID, 2) = 0;
+ 
+19* Write an SQL query to clone a new table from another table.?
+
+SELECT * INTO AuthorClone FROM Authors;
+SELECT * INTO AuthorClone FROM Authors WHERE 1 = 0;
+CREATE TABLE AuthorClone LIKE Authors;
+
+
+20* Write an SQL query to fetch intersecting records of two tables?
+
+(SELECT * FROM Authors)
+INTERSECT
+(SELECT * FROM AuthorClone);
+
+
+
+
+			select statments
+
+-- 6 insert statment
+
+INSERT INTO Customers VALUES(1,'Lotfy ','shawky',01222,12);
+INSERT INTO Customers VALUES(2,'Saad','fathy',0344340,21);
+INSERT INTO Customers VALUES(3,'Tarek','omar',01125,23);
+INSERT INTO Books VALUES(1,'love','50L.E',10,"Ahemd",20/12);
+INSERT INTO Books VALUES(2,'fiction','70L.E',16,"Nagib",6/1);
+
+
+
+
+
+
+-- 3 select using subquery
+
+
+SELECT * 
+   FROM Customers 
+   WHERE Customer_ID IN (SELECT ReaderID
+         FROM Customers 
+         WHERE Customer_ID = 1) ;
+
+SELECT * 
+   FROM Authors 
+   WHERE Author_ID IN (SELECT AuthorID
+         FROM Authors 
+         WHERE Author_ID = 1) ;
+
+SELECT * 
+   FROM Books 
+   WHERE Price IN (SELECT Price
+         FROM Books 
+         WHERE Price = '210 L.E') ;
+
+
+
+
+
+
+
+-- 2 select statments using count and group functions
+
+SELECT Book_ID, COUNT(*)  'count'
+FROM Books 
+GROUP BY Books;
+
+SELECT First_Name, COUNT(*) 'count'
+FROM Sellers 
+GROUP BY Sellers;
+
+
+
+
+
+
+-- 5 update statments
+
+UPDATE Sellers
+SET First_Name = 'neno'
+WHERE Seller_ID = 1;
+
+UPDATE Sellers
+SET Last_Name = 'kinakom'
+WHERE Seller_ID = 2;
+
+UPDATE Authors
+SET Phone = '01222222'
+WHERE Author_ID = 3;
+
+UPDATE Books
+SET Price = '200 L.E'
+WHERE Book_ID = 1;
+
+UPDATE Books
+SET Title = 40 
+WHERE Book_ID = 2;
+
+
+
+-- 5 select statements using different joins
+
+SELECT Sellers.Seller_ID, Sellers.First_Name
+FROM Sellers
+INNER JOIN Book ON Sellers.Seller_ID=Sellers.Seller_ID;
+
+SELECT Sellers.Seller_ID, Sellers.First_Name
+FROM Sellers
+LEFT JOIN Book ON Sellers.SellerID=Sellers.Seller_ID;
+
+SELECT Managers.Manager_ID, Managers.First_Name
+FROM Managers
+RIGHT JOIN Managers ON Managers.Manager_ID=Managers.Manager_ID;
+
+SELECT Authors.Author_ID, Authors.Name
+FROM Authors
+FULL JOIN Phone ON Authors.Author_ID=Authors.Author_ID;
+
+SELECT Books.BookID, Books.BookID
+FROM Books
+INNER JOIN Books ON Books.BookID=Books.ID;
+
+
+
+-- 5 delete statments
+
+DELETE FROM Sellers WHERE Seller_ID= 1;
+DELETE FROM Managers WHERE Manager_ID= 2;
+DELETE FROM Customers WHERE Customer_ID= 3;
+DELETE FROM Authors WHERE AuthorID= 1;
+DELETE FROM Authors WHERE AuthorID= 2;
+
+
+CREATE TABLE [Sallers] (
+  [Seller_ID] INT NOT NULL,
+  [First_Name] VARCHAR(50),
+  [Last_Name] VARCHAR(50),
+  [Salary] INT NOT NULL,
+  [Manager_ID] INT NOT NULL,
+  PRIMARY KEY ([Seller_ID])
+);
+
+CREATE INDEX [FK] ON  [Sallers] ([Manager_ID]);
+
+CREATE TABLE [Customers] (
+  [Customer_ID] INT NOT NULL,
+  [First_Name] VARCHAR(50),
+  [Last_Name] VARCHAR(50),
+  [Phone_NO] INT NOT NULL,
+  [Age] INT NOT NULL,
+  PRIMARY KEY ([Customer_ID])
+);
+
+CREATE TABLE [Books] (
+  [Book_ID] INT NOT NULL,
+  [Title] VARCHAR(50),
+  [Price] INT NOT NULL,
+  [Quantity] INT NOT NULL,
+  [Writer] VARCHAR(50),
+  [Publish_Date] DATE NOT NULL,
+  PRIMARY KEY ([Book_ID])
+);
+
+CREATE TABLE [Selling] (
+  [Sale_ID] <type>,
+  [Customer_ID] <type>,
+  [Seller_ID] <type>,
+  [Date] <type>,
+  [Book_ID] <type>,
+  PRIMARY KEY ([Sale_ID])
+);
+
+CREATE INDEX [FK] ON  [Selling] ([Customer_ID], [Seller_ID], [Book_ID]);
+
+CREATE TABLE [Managers] (
+  [Manager_ID] INT NOT NULL,
+  [First_Name] VARCHAR(50),
+  [Last_Name] VARCHAR(50),
+  [Phone_NO] INT NOT NULL,
+  PRIMARY KEY ([Manager_ID])
+);
+
+CREATE TABLE [Authors] (
+  [Author_ID] INT NOT NULL,
+  [Name] <VARCHAR(50),
+  [Phone] INT NOT NULL,
+  PRIMARY KEY ([Author_ID])
+);
